@@ -9,16 +9,12 @@ group = "me.airam"
 version = "1.0-SNAPSHOT"
 
 repositories {
-    jcenter()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-    implementation("io.ktor:ktor-server-netty:1.6.0")
-    implementation("io.ktor:ktor-html-builder:1.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.31")
     implementation ("org.json:json:20210307")
 }
 
