@@ -1,3 +1,3 @@
 package objects
 
-data class Localidad(val nombre : String, val codigo : Int, val enProvincia: Provincia)
+data class Localidad(val nombre : String, val codigo : String, val enProvincia: Provincia)
