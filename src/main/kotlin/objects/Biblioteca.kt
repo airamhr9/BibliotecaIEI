@@ -1,7 +1,7 @@
 package objects
 
 data class Biblioteca(val nombre : String,
-                      val tipo : String,
+                      val tipo : Titularidad,
                       val direccion : String,
                       val codigoPostal : String,
                       val longitud: Double,

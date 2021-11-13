@@ -3,6 +3,7 @@ package extractors
 import objects.Biblioteca
 import objects.Localidad
 import objects.Provincia
+import objects.Titularidad
 import java.io.Reader
 import java.nio.file.Files
 import java.nio.file.Path
@@ -13,15 +14,15 @@ class EUS {
 
     fun start() {
         val path : Path = Paths.get("src/bibliotecas.json")
-        var reader : Reader = Files.newBufferedReader(path)
+        val reader : Reader = Files.newBufferedReader(path)
 
-        var json = reader.readLines().toString()
+        val json = reader.readLines().toString()
 
         for( i in json.indices){
             if(json[i].equals('{')){
                 for ( j in i until json.length ){
                     if(json[j] == '}'){
-                        var biblioteca : String = json.substring(i,j)
+                        val biblioteca : String = json.substring(i,j)
                         extraer(biblioteca)
                         break
                     }
@@ -49,7 +50,7 @@ class EUS {
         val locCodigo = codigoPostalS.substring(2)
         val proCod = codigoPostalS.substring(0,2)
 
-        var codigoPostal = codigoPostalS
+        val codigoPostal = codigoPostalS
 
         ind1 = data.indexOf(("lonwgs84")) + 13
         ind2 = data.indexOf(("placename")) - 7
@@ -82,7 +83,8 @@ class EUS {
 
         val provincia = Provincia(proNombre,proCod)
         val localidad = Localidad(locNombre,locCodigo,provincia)
-        val biblioteca = Biblioteca(nombre, "publica", direccion, codigoPostal, longitud, latitud, telefono, email ,descripcion, localidad)
+        val biblioteca = Biblioteca(nombre, Titularidad.Publica, direccion, codigoPostal, longitud, latitud,
+            telefono, email ,descripcion, localidad)
 
     }
 }
