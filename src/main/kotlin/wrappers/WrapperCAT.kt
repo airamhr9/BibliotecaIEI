@@ -8,11 +8,10 @@ import java.nio.file.Paths
 class WrapperCAT(xmlFile: String, jsonFile: String) : Wrapper(xmlFile, jsonFile) {
 
     override fun createJsonFile() {
-        val prettyPrintIndentFactor = 4
-        val xmlString = String(Files.readAllBytes(Paths.get(sourceFile)))
-        val xmlJSONObj = XML.toJSONObject(xmlString)
+        val data = String(Files.readAllBytes(Paths.get(sourceFile)))
+        val jsonObject = XML.toJSONObject(data)
         FileWriter(jsonFile).use { fileWriter ->
-            fileWriter.write(xmlJSONObj.toString(prettyPrintIndentFactor))
+            fileWriter.write(jsonObject.toString(indentFactor))
         }
     }
 
