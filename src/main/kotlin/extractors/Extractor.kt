@@ -8,7 +8,7 @@ abstract class Extractor(val jsonFile: String) {
 
     abstract fun extraerDatos()
 
-    fun String.duplicarApostrofes(): String {
+    fun String.duplicarApostrofos(): String {
         return this.replace("'", "''")
     }
 

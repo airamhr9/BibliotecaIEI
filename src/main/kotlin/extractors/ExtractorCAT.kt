@@ -20,12 +20,12 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
         jsonArray.forEach {
             val element = it as JSONObject
 
-            val nombreBiblioteca = element.getString("nom").duplicarApostrofes()
-            val direccion = element.getString("via").duplicarApostrofes()
+            val nombreBiblioteca = element.getString("nom").duplicarApostrofos()
+            val direccion = element.getString("via").duplicarApostrofos()
             val longitud = element.getDouble("longitud")
             val latitud = element.getDouble("latitud")
             val email = element.getString("email")
-            val nombreLocalidad = element.getString("poblacio").duplicarApostrofes()
+            val nombreLocalidad = element.getString("poblacio").duplicarApostrofos()
 
             val codigoPostal = obtenerCodigoPostal(element)
             val telefono = obtenerTelefono(element)
@@ -90,7 +90,7 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
     private fun obtenerDescripcion(data: JSONObject): String {
         // Algunas descripciones son strings, otras son objetos y otras no existen
         return try {
-            data.getString("propietats").duplicarApostrofes()
+            data.getString("propietats").duplicarApostrofos()
         } catch (ex: JSONException) {
             ""
         }
