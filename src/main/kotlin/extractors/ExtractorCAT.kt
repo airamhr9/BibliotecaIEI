@@ -7,6 +7,7 @@ import objects.Titularidad
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
+import persistence.DataWarehouse
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -41,6 +42,8 @@ class ExtractorCAT(
             val localidad = Localidad(nombreLocalidad, codigoLocalidad, provincia)
             val biblioteca = Biblioteca(nombreBiblioteca, tipo, direccion, codigoPostal, longitud, latitud,
                 telefono, email, descripcion, localidad)
+
+            DataWarehouse.getInstance().addBiblioteca(biblioteca)
         }
     }
 
