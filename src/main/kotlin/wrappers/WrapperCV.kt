@@ -57,23 +57,23 @@ class WrapperCV(csvFile: String, jsonFile: String) : Wrapper(csvFile, jsonFile) 
     }
 
     companion object {
-        private val COD_PROVINCIA = 0
-        private val NOM_PROVINCIA = 1
-        private val COD_MUNICIPIO = 2
-        private val NOM_MUNICIPIO = 3
-        private val TIPO = 4
-        private val NOMBRE = 5
-        private val DIRECCION = 6
-        private val CP = 7
-        private val TELEFONO = 8
-        private val FAX = 9
-        private val WEB = 10;
-        private val CATALOGO = 11;
-        private val EMAIL = 12
-        private val CENTRAL = 13
-        private val COD_CARACTER = 14
-        private val DESC_CARACTER = 15
-        private val DECRETO = 16
+        private const val COD_PROVINCIA = 0
+        private const val NOM_PROVINCIA = 1
+        private const val COD_MUNICIPIO = 2
+        private const val NOM_MUNICIPIO = 3
+        private const val TIPO = 4
+        private const val NOMBRE = 5
+        private const val DIRECCION = 6
+        private const val CP = 7
+        private const val TELEFONO = 8
+        private const val FAX = 9
+        private const val WEB = 10
+        private const val CATALOGO = 11
+        private const val EMAIL = 12
+        private const val CENTRAL = 13
+        private const val COD_CARACTER = 14
+        private const val DESC_CARACTER = 15
+        private const val DECRETO = 16
     }
 
 }
