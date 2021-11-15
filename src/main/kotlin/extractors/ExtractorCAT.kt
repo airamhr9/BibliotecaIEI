@@ -7,15 +7,12 @@ import objects.Titularidad
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
-import persistence.DataWarehouse
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class ExtractorCAT(
-    val jsonFile: String
-) {
+class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
 
-    fun extraerDatos() {
+    override fun extraerDatos() {
         val jsonString = String(Files.readAllBytes(Paths.get(jsonFile)))
         val jsonObject = JSONObject(JSONTokener(jsonString))
         val jsonArray = jsonObject.getJSONObject("response").getJSONArray("row")
@@ -23,12 +20,12 @@ class ExtractorCAT(
         jsonArray.forEach {
             val element = it as JSONObject
 
-            val nombreBiblioteca = element.getString("nom")
-            val direccion = element.getString("via")
+            val nombreBiblioteca = element.getString("nom").duplicarApostrofes()
+            val direccion = element.getString("via").duplicarApostrofes()
             val longitud = element.getDouble("longitud")
             val latitud = element.getDouble("latitud")
             val email = element.getString("email")
-            val nombreLocalidad = element.getString("poblacio")
+            val nombreLocalidad = element.getString("poblacio").duplicarApostrofes()
 
             val codigoPostal = obtenerCodigoPostal(element)
             val telefono = obtenerTelefono(element)
@@ -43,85 +40,83 @@ class ExtractorCAT(
             val biblioteca = Biblioteca(nombreBiblioteca, tipo, direccion, codigoPostal, longitud, latitud,
                 telefono, email, descripcion, localidad)
 
-            DataWarehouse.getInstance().addBiblioteca(biblioteca)
+            dataWarehouse.addBiblioteca(biblioteca)
         }
     }
 
-    companion object {
-
-        private fun obtenerTitularidad(propiedades: String): Titularidad {
-            // En algunos casos no existen las propiedades
-            return if (propiedades == "") {
-                Titularidad.Publica
-            } else {
-                val propietatTitularitat = propiedades.substring(propiedades.lastIndexOf('|'))
-                when (propietatTitularitat) {
-                    "Privada" -> Titularidad.Privada
-                    else -> Titularidad.Publica
-                }
+    private fun obtenerTitularidad(propiedades: String): Titularidad {
+        // En algunos casos no existen las propiedades
+        return if (propiedades == "") {
+            Titularidad.Publica
+        } else {
+            val propietatTitularitat = propiedades.substring(propiedades.lastIndexOf('|'))
+            when (propietatTitularitat) {
+                "Privada" -> Titularidad.Privada
+                else -> Titularidad.Publica
             }
         }
+    }
 
-        private fun obtenerCodigoPostal(data: JSONObject): String {
-            // Algunos codigos postales son string y otros int
-            var codigoPostal: String
+    private fun obtenerCodigoPostal(data: JSONObject): String {
+        // Algunos codigos postales son string y otros int
+        var codigoPostal: String
+        try {
+            codigoPostal = data.getString("cpostal")
+        } catch (ex: JSONException) {
+            var cp = data.getInt("cpostal").toString()
+            if (cp.startsWith("8")) {
+                // El prefijo de Barcelona es "08", pero no se representa bien como Int
+                cp = "0" + cp
+            }
+            codigoPostal = cp
+        }
+        return codigoPostal
+    }
+
+    private fun obtenerTelefono(data: JSONObject): String {
+        // Algunos telefonos son string, otros son int y otros no existen
+        return try {
+            // Los numeros contienen espacios
+            data.getString("telefon1").replace(" ", "")
+        } catch (ex1: JSONException) {
             try {
-                codigoPostal = data.getString("cpostal")
-            } catch (ex: JSONException) {
-                var cp = data.getInt("cpostal").toString()
-                if (cp.startsWith("8")) {
-                    // El prefijo de Barcelona es "08", pero no se representa bien como Int
-                    cp = "0" + cp
-                }
-                codigoPostal = cp
-            }
-            return codigoPostal
-        }
-
-        private fun obtenerTelefono(data: JSONObject): String {
-            // Algunos telefonos son string, otros son int y otros no existen
-            return try {
-                // Los numeros contienen espacios
-                data.getString("telefon1").replace(" ", "")
-            } catch (ex1: JSONException) {
-                try {
-                    data.getInt("telefon1").toString()
-                } catch (ex2: JSONException) {
-                    ""
-                }
-            }
-        }
-
-        private fun obtenerDescripcion(data: JSONObject): String {
-            // Algunas descripciones son strings, otras son objetos y otras no existen
-            return try {
-                data.getString("propietats")
-            } catch (ex: JSONException) {
+                data.getInt("telefon1").toString()
+            } catch (ex2: JSONException) {
                 ""
             }
         }
+    }
 
-        private fun obtenerCodigoLocalidad(data: JSONObject): String {
-            // Algunos codigos de localidad son string y otros int
-            return try {
-                data.getString("codi_municipi")
-            } catch (ex: JSONException) {
-                data.getInt("codi_municipi").toString()
-            }
-        }
-
-        private fun obtenerCodigoProvincia(codigoPostal: String): String {
-            return codigoPostal.substring(0, 2)
-        }
-
-        private fun obtenerNombreProvincia(codigoProvincia: String): String {
-            return when (codigoProvincia) {
-                "08" -> "Barcelona"
-                "17" -> "Girona"
-                "25" -> "Lleida"
-                "43" -> "Tarragona"
-                else -> ""
-            }
+    private fun obtenerDescripcion(data: JSONObject): String {
+        // Algunas descripciones son strings, otras son objetos y otras no existen
+        return try {
+            data.getString("propietats").duplicarApostrofes()
+        } catch (ex: JSONException) {
+            ""
         }
     }
+
+    private fun obtenerCodigoLocalidad(data: JSONObject): String {
+        // Algunos codigos de localidad son string y otros int
+        return try {
+            data.getString("codi_municipi")
+        } catch (ex: JSONException) {
+            data.getInt("codi_municipi").toString()
+        }
+    }
+
+    private fun obtenerCodigoProvincia(codigoPostal: String): String {
+        return codigoPostal.substring(0, 2)
+    }
+
+    private fun obtenerNombreProvincia(codigoProvincia: String): String {
+        return when (codigoProvincia) {
+            "08" -> "Barcelona"
+            "17" -> "Girona"
+            "25" -> "Lleida"
+            "43" -> "Tarragona"
+            else -> ""
+        }
+    }
+
 }
