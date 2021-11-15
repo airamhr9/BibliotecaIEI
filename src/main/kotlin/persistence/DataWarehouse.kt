@@ -36,7 +36,7 @@ class DataWarehouse private constructor(){
 
             //Open a connection to the database
             connection = DriverManager.getConnection("jdbc:derby:biblioteca;create=true", properties)
-            connection.autoCommit = false;
+            connection.autoCommit = false
             val dbm: DatabaseMetaData = connection.metaData
             val rs: ResultSet = dbm.getTables(null, null, "PROVINCIA", null)
             val tableExists = rs.next()
@@ -54,9 +54,9 @@ class DataWarehouse private constructor(){
 
     fun createDatabase() {
         val query = listOf("CREATE TABLE provincia (codigo INT PRIMARY KEY, nombre VARCHAR(20))",
-        "CREATE TABLE localidad (codigo INT PRIMARY KEY, nombre VARCHAR (30),en_provincia int,CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",
-                "CREATE TABLE biblioteca (nombre VARCHAR(100),tipo VARCHAR(10), direccion VARCHAR(60),codigoPostal int, longitud float, " +
-                "latitud float,telefono int,email VARCHAR(40)," +
+        "CREATE TABLE localidad (codigo INT PRIMARY KEY, nombre VARCHAR (70),en_provincia int,CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",
+                "CREATE TABLE biblioteca (nombre VARCHAR(200),tipo VARCHAR(10), direccion VARCHAR(100),codigoPostal int, longitud float, " +
+                "latitud float,telefono VARCHAR(15),email VARCHAR(60)," +
                 "descripcion VARCHAR(100),en_localidad int, FOREIGN KEY(en_localidad) REFERENCES localidad(codigo))")
         for (createStatement in query){
             println(createStatement)
@@ -103,7 +103,7 @@ class DataWarehouse private constructor(){
                     " )",
                     "INSERT INTO biblioteca(nombre, tipo, direccion, codigopostal, longitud, latitud, telefono, email, descripcion, en_localidad) " +
                     "VALUES (\'${biblioteca.nombre}\', \'${biblioteca.tipo}\', \'${biblioteca.direccion}\', ${biblioteca.codigoPostal}, " +
-                    "${biblioteca.longitud}, ${biblioteca.latitud}, ${biblioteca.telefono}, \'${biblioteca.email}\', \'${biblioteca.descripcion}\', " +
+                    "${biblioteca.longitud}, ${biblioteca.latitud}, '${biblioteca.telefono}', \'${biblioteca.email}\', \'${biblioteca.descripcion}\', " +
                     "${biblioteca.enLocalidad.codigo})"
         )
         for (createStatement in query){
