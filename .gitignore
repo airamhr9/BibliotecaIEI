@@ -19,3 +19,6 @@ out/
 *.ipr
 *.iws
 /biblioteca/
+
+
+derby.log
