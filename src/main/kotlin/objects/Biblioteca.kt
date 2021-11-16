@@ -18,7 +18,7 @@ data class Biblioteca(val nombre : String,
             val localidad = Localidad(resultSet.getString("nombre_localidad"), resultSet.getString("codigo_localidad"), provincia)
             return Biblioteca(
                 resultSet.getString("nombre_biblioteca"),
-                if (resultSet.getString("tipo") == "publica") Titularidad.Publica else Titularidad.Privada,
+                if (resultSet.getString("tipo").lowercase() == "publica") Titularidad.Publica else Titularidad.Privada,
                 resultSet.getString("direccion"),
                 resultSet.getString("codigopostal"),
                 resultSet.getDouble("longitud"),

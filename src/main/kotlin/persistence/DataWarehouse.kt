@@ -70,8 +70,13 @@ class DataWarehouse private constructor(){
 
     fun getBibliotecas() : ArrayList<Biblioteca> {
         val statement = connection.createStatement()
-        val resultSet = statement.executeQuery("SELECT *, biblioteca.nombre as nombre_biblioteca, localidad.codigo as codigo_localidad, provincia.codigo as codigo_provincia, localidad.nombre as nombre_localidad, provincia.nombre as nombre_provincia FROM biblioteca "+
-                "LEFT JOIN localidad ON localidad.codigo = biblioteca.en_localidad  LEFT JOIN provincia ON provincia.codigo = localidad.en_provincia;")
+        val resultSet = statement.executeQuery(
+                "SELECT biblioteca.nombre as nombre_biblioteca, tipo, direccion, telefono, codigoPostal, latitud, longitud, email, descripcion, \n" +
+                "localidad.codigo as codigo_localidad, " +
+                "provincia.codigo as codigo_provincia, localidad.nombre as nombre_localidad, " +
+                "provincia.nombre as nombre_provincia " +
+                "FROM biblioteca "+
+                "LEFT JOIN localidad ON localidad.codigo = biblioteca.en_localidad  LEFT JOIN provincia ON provincia.codigo = localidad.en_provincia")
         val result = ArrayList<Biblioteca>()
         while (resultSet.next()) {
             result.add(Biblioteca.fromResultSet(resultSet))
@@ -95,7 +100,7 @@ class DataWarehouse private constructor(){
                     "  HAVING count(*)=0  \n" +
                     " )",
             "INSERT INTO localidad (  \n" +
-                    "  SELECT $codLoc as codigo, \'$nomLoc\' as nombre\n, $codProv as en_provincia" +
+                    "  SELECT $codLoc as codigo, \'$nomLoc\' as nombre, $codProv as en_provincia" +
                     "  FROM localidad  \n" +
                     "  WHERE  \n" +
                     "    codigo = $codLoc AND nombre = \'$nomLoc\' AND en_provincia = $codProv \n" +
