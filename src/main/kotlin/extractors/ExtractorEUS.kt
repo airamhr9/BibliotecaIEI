@@ -10,6 +10,7 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import java.nio.file.Files
 import java.nio.file.Paths
+import javax.sound.sampled.AudioFormat
 
 
 class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
@@ -28,15 +29,20 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
             val longitud = element.getDouble("lonwgs84")
             val latitud = element.getDouble("latwgs84")
             val email = element.getString("email")
-            val nombreLocalidad = element.getString("municipality")
-
             val codigoPostal = getPostalCode(element.getString("postalcode"))
             val telefono = element.getString("phone")
             val descripcion = element.getString("documentDescription")
             val tipo = Titularidad.Publica
-            val codigoLocalidad =  codigoPostal.substring(2)
+
             val codigoProvincia = codigoPostal.substring(0,2)
             val nombreProvincia = element.getString("territory")
+
+            var nombreLocalidad = element.getString("municipality")
+            if(nombreLocalidad == "Vitoria-Gasteiz"){
+                nombreLocalidad = "Vitoria - Gasteiz"
+            }
+            val codigoLocalidad = getCodigoLocalidad(latitud, codigoPostal)
+
 
             val provincia = Provincia(nombreProvincia, codigoProvincia)
             val localidad = Localidad(nombreLocalidad, codigoLocalidad, provincia)
@@ -45,6 +51,17 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
 
             dataWarehouse.addBiblioteca(biblioteca)
         }
+    }
+
+    private fun getCodigoLocalidad(lat: Double, codigoPostal : String): String {
+        var cod = codigoPostal
+        cod = cod + lat.toString().substring(3)
+
+        if(cod.length > 9){
+            cod = cod.substring(0,9)
+        }
+
+        return cod
     }
 
     private fun getPostalCode(postalCode1 : String) : String{
