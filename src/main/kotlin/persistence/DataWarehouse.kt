@@ -53,11 +53,11 @@ class DataWarehouse private constructor(){
     }
 
     fun createDatabase() {
-        val query = listOf("CREATE TABLE provincia (codigo INT PRIMARY KEY, nombre VARCHAR(20))",
-        "CREATE TABLE localidad (codigo VARCHAR(70) PRIMARY KEY, nombre VARCHAR (70),en_provincia int,CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",
-                "CREATE TABLE biblioteca (nombre VARCHAR(200),tipo VARCHAR(10), direccion VARCHAR(100),codigoPostal int, longitud float, " +
-                "latitud float,telefono VARCHAR(100),email VARCHAR(100)," +
-                "descripcion VARCHAR(200),en_localidad VARCHAR(70), FOREIGN KEY(en_localidad) REFERENCES localidad(codigo))")
+        val query = listOf("CREATE TABLE provincia (codigo VARCHAR(5) PRIMARY KEY, nombre VARCHAR(20))",
+        "CREATE TABLE localidad (codigo VARCHAR(70) PRIMARY KEY, nombre VARCHAR (70),en_provincia VARCHAR(5),CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",
+                "CREATE TABLE biblioteca (nombre VARCHAR(200),tipo VARCHAR(20), direccion VARCHAR(100),codigoPostal VARCHAR(10), longitud float, " +
+                "latitud float,telefono VARCHAR(45),email VARCHAR(250)," +
+                "descripcion VARCHAR(200), en_localidad VARCHAR(70), FOREIGN KEY(en_localidad) REFERENCES localidad(codigo))")
         for (createStatement in query){
             println(createStatement)
             val statement = connection.createStatement()
@@ -93,23 +93,23 @@ class DataWarehouse private constructor(){
         val nomLoc = biblioteca.enLocalidad.nombre
         val query = listOf(
             "INSERT INTO provincia (  \n" +
-                    "  SELECT $codProv as codigo, \'$nomProv\' as nombre\n" +
+                    "  SELECT \'$codProv\' as codigo, \'$nomProv\' as nombre\n" +
                     "  FROM provincia  \n" +
                     "  WHERE  \n" +
-                    "    codigo = $codProv AND nombre = \'$nomProv\'  \n" +
+                    "    codigo = \'$codProv\' AND nombre = \'$nomProv\'  \n" +
                     "  HAVING count(*)=0  \n" +
                     " )",
             "INSERT INTO localidad (  \n" +
-                    "  SELECT $codLoc as codigo, \'$nomLoc\' as nombre, $codProv as en_provincia" +
+                    "  SELECT \'$codLoc\' as codigo, \'$nomLoc\' as nombre, \'$codProv\' as en_provincia" +
                     "  FROM localidad  \n" +
                     "  WHERE  \n" +
-                    "    codigo = $codLoc AND nombre = \'$nomLoc\' AND en_provincia = $codProv \n" +
+                    "    codigo = \'$codLoc\' AND nombre = \'$nomLoc\' AND en_provincia = \'$codProv\' \n" +
                     "  HAVING count(*)=0  \n" +
                     " )",
                     "INSERT INTO biblioteca(nombre, tipo, direccion, codigopostal, longitud, latitud, telefono, email, descripcion, en_localidad) " +
-                    "VALUES (\'${biblioteca.nombre}\', \'${biblioteca.tipo}\', \'${biblioteca.direccion}\', ${biblioteca.codigoPostal}, " +
+                    "VALUES (\'${biblioteca.nombre}\', \'${biblioteca.tipo}\', \'${biblioteca.direccion}\', \'${biblioteca.codigoPostal}\', " +
                     "${biblioteca.longitud}, ${biblioteca.latitud}, '${biblioteca.telefono}', \'${biblioteca.email}\', \'${biblioteca.descripcion}\', " +
-                    "${biblioteca.enLocalidad.codigo})"
+                    "\'${biblioteca.enLocalidad.codigo}\')"
         )
         for (createStatement in query){
             println(createStatement)

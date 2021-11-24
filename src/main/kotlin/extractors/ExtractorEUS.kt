@@ -17,7 +17,7 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
 
     override fun extraerDatos() {
 
-        var jsonString = String(Files.readAllBytes(Paths.get(jsonFile)))
+        val jsonString = String(Files.readAllBytes(Paths.get(jsonFile)))
 
         val jsonArray = JSONArray(jsonString)
 
@@ -41,7 +41,7 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
             if(nombreLocalidad == "Vitoria-Gasteiz"){
                 nombreLocalidad = "Vitoria - Gasteiz"
             }
-            val codigoLocalidad = codigoPostal + nombreLocalidad
+            val codigoLocalidad = nombreLocalidad + codigoProvincia
 
 
             val provincia = Provincia(nombreProvincia, codigoProvincia)
@@ -51,17 +51,6 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
 
             dataWarehouse.addBiblioteca(biblioteca)
         }
-    }
-
-    private fun getCodigoLocalidad(lat: Double, codigoPostal : String): String {
-        var cod = codigoPostal
-        cod = cod + lat.toString().substring(3)
-
-        if(cod.length > 9){
-            cod = cod.substring(0,9)
-        }
-
-        return cod
     }
 
     private fun getPostalCode(postalCode1 : String) : String{

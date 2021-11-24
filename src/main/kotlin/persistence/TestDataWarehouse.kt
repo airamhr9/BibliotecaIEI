@@ -26,7 +26,7 @@ fun main() {
     //val wrapper = WrapperCV(csvFile,jsonFile)
     //wrapper.createJsonFile()
 
-    val jsonFile = "D:\\Universidad\\bibliotecas.json"
+    val jsonFile = "/home/airam/Documentos/Proyecto/Fuentes de datos/Euskadi/bibliotecas.json"
     val extractorEUS = ExtractorEUS(jsonFile)
     extractorEUS.extraerDatos()
 
