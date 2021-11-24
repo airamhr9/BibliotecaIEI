@@ -1,7 +1,6 @@
 package persistence
 
 import objects.Biblioteca
-import oracle.net.aso.c
 import java.sql.Connection
 import java.sql.DatabaseMetaData
 import java.sql.DriverManager
@@ -54,7 +53,7 @@ class DataWarehouse private constructor(){
 
     fun createDatabase() {
         val query = listOf("CREATE TABLE provincia (codigo VARCHAR(5) PRIMARY KEY, nombre VARCHAR(20))",
-        "CREATE TABLE localidad (codigo VARCHAR(70) PRIMARY KEY, nombre VARCHAR (70),en_provincia VARCHAR(5),CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",
+        "CREATE TABLE localidad (codigo VARCHAR(70) PRIMARY KEY, nombre VARCHAR (150),en_provincia VARCHAR(5),CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",
                 "CREATE TABLE biblioteca (nombre VARCHAR(200),tipo VARCHAR(20), direccion VARCHAR(100),codigoPostal VARCHAR(10), longitud float, " +
                 "latitud float,telefono VARCHAR(45),email VARCHAR(250)," +
                 "descripcion VARCHAR(200), en_localidad VARCHAR(70), FOREIGN KEY(en_localidad) REFERENCES localidad(codigo))")
