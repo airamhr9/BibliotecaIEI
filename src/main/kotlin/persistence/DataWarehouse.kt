@@ -57,7 +57,7 @@ class DataWarehouse private constructor(){
         "CREATE TABLE localidad (codigo VARCHAR(70) PRIMARY KEY, nombre VARCHAR (70),en_provincia int,CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",
                 "CREATE TABLE biblioteca (nombre VARCHAR(200),tipo VARCHAR(10), direccion VARCHAR(100),codigoPostal int, longitud float, " +
                 "latitud float,telefono VARCHAR(100),email VARCHAR(100)," +
-                "descripcion VARCHAR(200),en_localidad int, FOREIGN KEY(en_localidad) REFERENCES localidad(codigo))")
+                "descripcion VARCHAR(200),en_localidad VARCHAR(70), FOREIGN KEY(en_localidad) REFERENCES localidad(codigo))")
         for (createStatement in query){
             println(createStatement)
             val statement = connection.createStatement()
