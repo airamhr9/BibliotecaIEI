@@ -76,7 +76,8 @@ class ExtractorCV(jsonFile: String) : Extractor(jsonFile) {
     }
 
     private fun coordenada(direccion: String): PuntoGeografico{
-       var ubicacion = Ubicacion("C:\\Users\\Jaime\\Documents\\FuentesIEI\\chromedriver.exe")
+        var driverPath= ("C:\\Users\\Jaime\\Documents\\FuentesIEI\\chromedriver.exe")
+       var ubicacion = Ubicacion(driverPath)
        var lugar = ubicacion.obtenerCoordenadas(direccion)
         return lugar
     }
