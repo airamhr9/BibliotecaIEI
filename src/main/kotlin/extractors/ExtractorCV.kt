@@ -11,6 +11,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 
+
 class ExtractorCV(jsonFile: String) : Extractor(jsonFile) {
 
     override fun extraerDatos() {
@@ -41,7 +42,7 @@ class ExtractorCV(jsonFile: String) : Extractor(jsonFile) {
             val provincia = Provincia(nombreProvincia, codigoProvincia)
             val localidad = Localidad(nombreLocalidad, codigoLocalidad, provincia)
             val biblioteca = Biblioteca(
-                nombreBiblioteca, tipo, direccion, codigoPostal, 0.0, 0.0,
+                nombreBiblioteca, tipo, direccion, codigoPostal, coordenada(direccion).longitud, coordenada(direccion).latitud,
                 telefono, email, descripcion, localidad
             )
 
@@ -65,7 +66,6 @@ class ExtractorCV(jsonFile: String) : Extractor(jsonFile) {
         /*if(nomLocalidad == "JESUS POBRE" ||nomLocalidad == "PUERTO SAGUNTO (EL)"
             || nomLocalidad == "MARENY DE BARRAQUETES" || nomLocalidad == "PERELLÓ (EL)"
         || nomLocalidad == "CAMPELL" || nomLocalidad == "ALTEA LA VELLA" || nomLocalidad == "ALCALÀ DE XIVERT"
-
         )*/
 
             codeL += " " + nomLocalidad.take(15)
@@ -73,6 +73,12 @@ class ExtractorCV(jsonFile: String) : Extractor(jsonFile) {
 
             return codeL
 
+    }
+
+    private fun coordenada(direccion: String): PuntoGeografico{
+       var ubicacion = Ubicacion("C:\\Users\\Jaime\\Documents\\FuentesIEI\\chromedriver.exe")
+       var lugar = ubicacion.obtenerCoordenadas(direccion)
+        return lugar
     }
 
     private fun getTitularidad(data: JSONObject): Titularidad{
