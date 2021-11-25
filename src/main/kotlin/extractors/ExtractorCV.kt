@@ -49,25 +49,29 @@ class ExtractorCV(jsonFile: String) : Extractor(jsonFile) {
         }
     }
     private fun getCodLocalidad(data: JSONObject):String {
-        var codLocalidad: String
-        var localidad = data.getString("COD_MUNICIPIO")
+        var codeL: String
+        var codLocalidad = data.getString("COD_MUNICIPIO")
         var codProv = data.getString("COD_PROVINCIA")
 
-        var nomLocalidad = data.getString("NOM_MUNICIPIO")
 
-        if(localidad.length <3){
-            localidad = "0"+localidad;
+        var nomLocalidad = data.getString("NOM_MUNICIPIO").duplicarApostrofos()
+
+        if(codLocalidad.length <3){
+            codLocalidad = "0"+codLocalidad;
         }
-        codLocalidad = codProv+localidad
+        //var loc = nomLocalidad.take(5)
+        codeL = codProv + codLocalidad
 
-        if(nomLocalidad == "JESUS POBRE" ||nomLocalidad == "PUERTO SAGUNTO (EL)"
+        /*if(nomLocalidad == "JESUS POBRE" ||nomLocalidad == "PUERTO SAGUNTO (EL)"
             || nomLocalidad == "MARENY DE BARRAQUETES" || nomLocalidad == "PERELLÓ (EL)"
-            || nomLocalidad == "CAMPELL"
-        ){
-            codLocalidad += " " + nomLocalidad
-        }
+        || nomLocalidad == "CAMPELL" || nomLocalidad == "ALTEA LA VELLA" || nomLocalidad == "ALCALÀ DE XIVERT"
 
-            return codLocalidad
+        )*/
+
+            codeL += " " + nomLocalidad.take(15)
+
+
+            return codeL
 
     }
 
