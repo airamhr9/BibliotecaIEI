@@ -52,6 +52,18 @@ class DataWarehouse private constructor(){
         }
     }
 
+    fun deleteTables() {
+        val queries = listOf("DELETE * FROM biblioteca", "DELETE * FROM provincia", "DELETE * FROM localidad")
+        for (query in queries) {
+           val statement = connection.createStatement()
+            statement.executeUpdate(query)
+            statement.close()
+        }
+        connection.commit()
+        println("Tablas eliminadas")
+    }
+
+
     fun createDatabase() {
         val query = listOf("CREATE TABLE provincia (codigo VARCHAR(5) PRIMARY KEY, nombre VARCHAR(20))",
         "CREATE TABLE localidad (codigo VARCHAR(70) PRIMARY KEY, nombre VARCHAR (70),en_provincia VARCHAR(5),CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",

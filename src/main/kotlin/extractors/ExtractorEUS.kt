@@ -43,7 +43,6 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
             }
             val codigoLocalidad = nombreLocalidad + codigoProvincia
 
-
             val provincia = Provincia(nombreProvincia, codigoProvincia)
             val localidad = Localidad(nombreLocalidad, codigoLocalidad, provincia)
             val biblioteca = Biblioteca(nombreBiblioteca, tipo, direccion, codigoPostal, longitud, latitud,
