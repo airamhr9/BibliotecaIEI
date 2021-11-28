@@ -5,20 +5,15 @@ import objects.Localidad
 import objects.Provincia
 import objects.Titularidad
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import org.json.JSONTokener
+import persistence.DataWarehouse
 import java.nio.file.Files
 import java.nio.file.Paths
-import javax.sound.sampled.AudioFormat
-
 
 class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
 
     override fun extraerDatos() {
-
         val jsonString = String(Files.readAllBytes(Paths.get(jsonFile)))
-
         val jsonArray = JSONArray(jsonString)
 
         jsonArray .forEach {
@@ -48,16 +43,16 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
             val biblioteca = Biblioteca(nombreBiblioteca, tipo, direccion, codigoPostal, longitud, latitud,
                 telefono, email, descripcion, localidad)
 
-            dataWarehouse.addBiblioteca(biblioteca)
+            DataWarehouse.addBiblioteca(biblioteca)
         }
     }
 
-    private fun getPostalCode(postalCode1 : String) : String{
+    private fun getPostalCode(postalCode1: String) : String{
         var postalCode = postalCode1
-        if(postalCode[2].equals('.')){
+        if (postalCode[2] == '.') {
             postalCode = postalCode.substring(0,2) + postalCode.substring(3)
         }
-        return  postalCode
+        return postalCode
     }
 
 }

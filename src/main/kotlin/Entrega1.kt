@@ -23,8 +23,7 @@ fun main(args: Array<String>) {
     println("Chrome driver: $chromeDriverPath")
 
     // Vaciar las tablas de la BD
-    val dataWarehouse = DataWarehouse.getInstance()
-    dataWarehouse.deleteTables()
+    DataWarehouse.deleteTables()
 
     // Procesar datos de Euskadi
     val extractorEUS = ExtractorEUS(jsonFileEUS)
@@ -45,7 +44,7 @@ fun main(args: Array<String>) {
     }
 
     // Imprimir las bibliotecas de la BD
-    val bibliotecas = dataWarehouse.getBibliotecas()
+    val bibliotecas = DataWarehouse.getBibliotecas()
     bibliotecas.forEach { println(it) }
 
 }

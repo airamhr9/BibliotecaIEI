@@ -30,7 +30,6 @@ fun main() {
     val extractorEUS = ExtractorEUS(jsonFile)
     extractorEUS.extraerDatos()
 
-    val dataWarehouse = DataWarehouse.getInstance()
-    val bibliotecas = dataWarehouse.getBibliotecas()
+    val bibliotecas = DataWarehouse.getBibliotecas()
     bibliotecas.forEach { println(it) }
 }

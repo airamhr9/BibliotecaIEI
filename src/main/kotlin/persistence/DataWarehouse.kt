@@ -8,26 +8,14 @@ import java.sql.ResultSet
 import java.util.*
 import kotlin.system.exitProcess
 
-
-class DataWarehouse private constructor(){
+object DataWarehouse {
     private val connection : Connection
-
-    companion object {
-        private var dataWarehouse : DataWarehouse? = null
-
-        fun getInstance() : DataWarehouse {
-            if (dataWarehouse == null) {
-                dataWarehouse = DataWarehouse()
-            }
-            return dataWarehouse!!
-        }
-    }
 
     init {
         try{
             val properties = Properties()
 
-            //Populate the properties file with user name and password
+            //Populate the properties file with username and password
             with(properties){
                 put("user", "admin")
                 put("password", "pw")
@@ -63,7 +51,7 @@ class DataWarehouse private constructor(){
     }
 
 
-    fun createDatabase() {
+    private fun createDatabase() {
         val query = listOf("CREATE TABLE provincia (codigo VARCHAR(5) PRIMARY KEY, nombre VARCHAR(20))",
         "CREATE TABLE localidad (codigo VARCHAR(70) PRIMARY KEY, nombre VARCHAR (150),en_provincia VARCHAR(5),CONSTRAINT fk_provincia FOREIGN KEY(en_provincia) REFERENCES provincia(codigo))",
                 "CREATE TABLE biblioteca (nombre VARCHAR(200),tipo VARCHAR(20), direccion VARCHAR(100),codigoPostal VARCHAR(10), longitud float, " +

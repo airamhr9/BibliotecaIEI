@@ -7,6 +7,7 @@ import objects.Titularidad
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
+import persistence.DataWarehouse
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -40,7 +41,7 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
             val biblioteca = Biblioteca(nombreBiblioteca, tipo, direccion, codigoPostal, longitud, latitud,
                 telefono, email, descripcion, localidad)
 
-            dataWarehouse.addBiblioteca(biblioteca)
+            DataWarehouse.addBiblioteca(biblioteca)
         }
     }
 

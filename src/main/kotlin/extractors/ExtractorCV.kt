@@ -7,10 +7,9 @@ import objects.Titularidad
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import persistence.DataWarehouse
 import java.nio.file.Files
 import java.nio.file.Paths
-
-
 
 class ExtractorCV(jsonFile: String, val ubicacion: Ubicacion) : Extractor(jsonFile) {
 
@@ -45,33 +44,25 @@ class ExtractorCV(jsonFile: String, val ubicacion: Ubicacion) : Extractor(jsonFi
                 telefono, email, descripcion, localidad
             )
 
-            dataWarehouse.addBiblioteca(biblioteca)
+            DataWarehouse.addBiblioteca(biblioteca)
         }
     }
+
     private fun getCodLocalidad(data: JSONObject):String {
         var codeL: String
         var codLocalidad = data.getString("COD_MUNICIPIO")
         val codProv = data.getString("COD_PROVINCIA")
-
 
         val nomLocalidad = data.getString("NOM_MUNICIPIO").duplicarApostrofos()
 
         if(codLocalidad.length <3){
             codLocalidad = "0"+codLocalidad
         }
-        //var loc = nomLocalidad.take(5)
+
         codeL = codProv + codLocalidad
+        codeL += " " + nomLocalidad.take(15)
 
-        /*if(nomLocalidad == "JESUS POBRE" ||nomLocalidad == "PUERTO SAGUNTO (EL)"
-            || nomLocalidad == "MARENY DE BARRAQUETES" || nomLocalidad == "PERELLÓ (EL)"
-        || nomLocalidad == "CAMPELL" || nomLocalidad == "ALTEA LA VELLA" || nomLocalidad == "ALCALÀ DE XIVERT"
-        )*/
-
-            codeL += " " + nomLocalidad.take(15)
-
-
-            return codeL
-
+        return codeL
     }
 
     private fun getTitularidad(data: JSONObject): Titularidad{
