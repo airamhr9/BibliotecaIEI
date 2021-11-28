@@ -1,6 +1,7 @@
 import extractors.ExtractorCAT
 import extractors.ExtractorCV
 import extractors.ExtractorEUS
+import extractors.Ubicacion
 import persistence.DataWarehouse
 import wrappers.WrapperCAT
 import wrappers.WrapperCV
@@ -38,8 +39,10 @@ fun main(args: Array<String>) {
     // Procesar datos de la Comunidad Valenciana
     val wrapperCV = WrapperCV(csvFileCV, jsonFileCV)
     wrapperCV.createJsonFile()
-    val extractorCV = ExtractorCV(jsonFileCV) // Pasar path del driver u objeto Ubicacion (y despues cerrarlo)
-    extractorCV.extraerDatos()
+    Ubicacion(chromeDriverPath).use { ubicacion ->
+        val extractorCV = ExtractorCV(jsonFileCV, ubicacion)
+        extractorCV.extraerDatos()
+    }
 
     // Imprimir las bibliotecas de la BD
     val bibliotecas = dataWarehouse.getBibliotecas()
