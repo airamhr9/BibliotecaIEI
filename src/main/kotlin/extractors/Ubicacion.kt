@@ -31,7 +31,7 @@ class Ubicacion(driverPath: String) : Closeable {
             campoDireccion.clear()
             campoDireccion.sendKeys(direccion)
             botonEnviar.click()
-            Thread.sleep(500)
+            Thread.sleep(250)
             val latitud = campoLatitud.getAttribute("value")
             val longitud = campoLongitud.getAttribute("value")
             PuntoGeografico(latitud.toDouble(), longitud.toDouble())
