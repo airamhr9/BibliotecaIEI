@@ -40,7 +40,7 @@ object DataWarehouse {
     }
 
     fun deleteTables() {
-        val queries = listOf("DELETE * FROM biblioteca", "DELETE * FROM provincia", "DELETE * FROM localidad")
+        val queries = listOf("DELETE FROM biblioteca", "DELETE FROM provincia", "DELETE FROM localidad")
         for (query in queries) {
            val statement = connection.createStatement()
             statement.executeUpdate(query)
