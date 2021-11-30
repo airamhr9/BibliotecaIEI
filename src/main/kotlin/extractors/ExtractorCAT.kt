@@ -60,18 +60,16 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
 
     private fun obtenerCodigoPostal(data: JSONObject): String {
         // Algunos codigos postales son string y otros int
-        var codigoPostal: String
-        try {
-            codigoPostal = data.getString("cpostal")
+        return try {
+            data.getString("cpostal")
         } catch (ex: JSONException) {
-            var cp = data.getInt("cpostal").toString()
-            if (cp.startsWith("8")) {
+            var codigoPostal = data.getInt("cpostal").toString()
+            if (codigoPostal.startsWith("8")) {
                 // El prefijo de Barcelona es "08", pero no se representa bien como Int
-                cp = "0" + cp
+                codigoPostal = "0" + codigoPostal
             }
-            codigoPostal = cp
+            codigoPostal
         }
-        return codigoPostal
     }
 
     private fun obtenerTelefono(data: JSONObject): String {
