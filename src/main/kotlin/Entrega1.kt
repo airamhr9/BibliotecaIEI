@@ -24,6 +24,10 @@ fun main(args: Array<String>) {
 
     // Vaciar las tablas de la BD
     DataWarehouse.deleteTables()
+    var bibliotecas = DataWarehouse.getBibliotecas()
+    if (bibliotecas.isEmpty()) {
+        println("La base da datos no contiene ninguna biblioteca")
+    }
 
     // Procesar datos de Euskadi
     val extractorEUS = ExtractorEUS(jsonFileEUS)
@@ -44,7 +48,7 @@ fun main(args: Array<String>) {
     }
 
     // Imprimir las bibliotecas de la BD
-    val bibliotecas = DataWarehouse.getBibliotecas()
+    bibliotecas = DataWarehouse.getBibliotecas()
     bibliotecas.forEach { println(it) }
 
 }
