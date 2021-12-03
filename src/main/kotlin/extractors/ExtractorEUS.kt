@@ -25,7 +25,7 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
             val latitud = element.getDouble("latwgs84")
             val email = element.getString("email")
             val codigoPostal = getPostalCode(element.getString("postalcode"))
-            val telefono = element.getString("phone")
+            val telefono = obtenerTelefono(element)
             val descripcion = element.getString("documentDescription")
             val tipo = Titularidad.Publica
 
@@ -53,6 +53,10 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
             postalCode = postalCode.substring(0,2) + postalCode.substring(3)
         }
         return postalCode
+    }
+
+    private fun obtenerTelefono(data: JSONObject): String {
+        return data.getString("phone").replace(" ", "").take(9)
     }
 
 }
