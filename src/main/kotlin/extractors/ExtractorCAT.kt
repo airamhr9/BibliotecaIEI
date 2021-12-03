@@ -28,11 +28,12 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
             val email = element.getString("email")
             val nombreLocalidad = element.getString("poblacio").duplicarApostrofos()
 
+            val codigoLocalidad = generarIdentificadorDeLocalidad()
+
             val codigoPostal = obtenerCodigoPostal(element)
             val telefono = obtenerTelefono(element)
             val descripcion = obtenerDescripcion(element)
             val tipo = obtenerTitularidad(descripcion)
-            val codigoLocalidad = obtenerCodigoLocalidad(element)
             val codigoProvincia = obtenerCodigoProvincia(codigoPostal)
             val nombreProvincia = obtenerNombreProvincia(codigoProvincia)
 
@@ -92,15 +93,6 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
             data.getString("propietats").duplicarApostrofos()
         } catch (ex: JSONException) {
             ""
-        }
-    }
-
-    private fun obtenerCodigoLocalidad(data: JSONObject): String {
-        // Algunos codigos de localidad son string y otros int
-        return try {
-            data.getString("codi_municipi")
-        } catch (ex: JSONException) {
-            data.getInt("codi_municipi").toString()
         }
     }
 

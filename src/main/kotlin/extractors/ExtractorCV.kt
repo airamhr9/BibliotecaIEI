@@ -30,7 +30,7 @@ class ExtractorCV(jsonFile: String, val ubicacion: Ubicacion) : Extractor(jsonFi
             val telefono = getTelf(element)
             val descripcion = element.getString("TIPO")
             val tipo = getTitularidad(element)
-            val codigoLocalidad = getCodLocalidad(element)
+            val codigoLocalidad = generarIdentificadorDeLocalidad()
             val codigoProvincia = element.getString("COD_PROVINCIA")
             val nombreProvincia = element.getString("NOM_PROVINCIA")
 
@@ -51,23 +51,6 @@ class ExtractorCV(jsonFile: String, val ubicacion: Ubicacion) : Extractor(jsonFi
     private fun getTelf(data: JSONObject):String{
         val telefono = data.getString("TELEFONO").removePrefix("TELF.")
         return telefono.take(9)
-    }
-
-    private fun getCodLocalidad(data: JSONObject):String {
-        var codeL: String
-        var codLocalidad = data.getString("COD_MUNICIPIO")
-        val codProv = data.getString("COD_PROVINCIA")
-
-        val nomLocalidad = data.getString("NOM_MUNICIPIO").duplicarApostrofos()
-
-        if(codLocalidad.length <3){
-            codLocalidad = "0"+codLocalidad
-        }
-
-        codeL = codProv + codLocalidad
-        codeL += " " + nomLocalidad.take(15)
-
-        return codeL
     }
 
     private fun getTitularidad(data: JSONObject): Titularidad{

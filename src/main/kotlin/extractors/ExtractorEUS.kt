@@ -36,7 +36,7 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
             if(nombreLocalidad == "Vitoria-Gasteiz"){
                 nombreLocalidad = "Vitoria - Gasteiz"
             }
-            val codigoLocalidad = nombreLocalidad + codigoProvincia
+            val codigoLocalidad = generarIdentificadorDeLocalidad()
 
             val provincia = Provincia(nombreProvincia, codigoProvincia)
             val localidad = Localidad(nombreLocalidad, codigoLocalidad, provincia)
