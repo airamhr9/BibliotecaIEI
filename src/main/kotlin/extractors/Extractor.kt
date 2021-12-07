@@ -10,8 +10,21 @@ abstract class Extractor(val jsonFile: String) {
         return this.replace("'", "''")
     }
 
-    protected fun generarIdentificadorDeLocalidad(): String {
+    private fun generarIdentificador(): String {
         return UUID.randomUUID().toString()
+    }
+
+    protected fun generarIdentificadorDeLocalidad(
+        codigosDeLocalidad: MutableMap<String, String>,
+        localidad: String
+    ): String {
+        return if (codigosDeLocalidad.containsKey(localidad)) {
+            codigosDeLocalidad[localidad]!!
+        } else {
+            val id = generarIdentificador()
+            codigosDeLocalidad[localidad] = id
+            id
+        }
     }
 
 }

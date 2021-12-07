@@ -28,7 +28,7 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
             val email = element.getString("email")
             val nombreLocalidad = element.getString("poblacio").duplicarApostrofos()
 
-            val codigoLocalidad = generarIdentificadorDeLocalidad()
+            val codigoLocalidad = generarIdentificadorDeLocalidad(codigosDeLocalidadCAT, obtenerCodigoLocalidad(element))
 
             val codigoPostal = obtenerCodigoPostal(element)
             val telefono = obtenerTelefono(element)
@@ -73,6 +73,15 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
         }
     }
 
+    private fun obtenerCodigoLocalidad(data: JSONObject): String {
+        // Algunos codigos de localidad son string y otros int
+        return try {
+            data.getString("codi_municipi")
+        } catch (ex: JSONException) {
+            data.getInt("codi_municipi").toString()
+        }
+    }
+
     private fun obtenerTelefono(data: JSONObject): String {
         // Algunos telefonos son string, otros son int y otros no existen
         return try {
@@ -108,6 +117,10 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
             "43" -> "Tarragona"
             else -> ""
         }
+    }
+
+    companion object {
+        private val codigosDeLocalidadCAT = mutableMapOf<String, String>()
     }
 
 }

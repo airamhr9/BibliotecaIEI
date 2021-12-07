@@ -30,12 +30,13 @@ class ExtractorCV(jsonFile: String, val ubicacion: Ubicacion) : Extractor(jsonFi
             val telefono = getTelf(element)
             val descripcion = element.getString("TIPO")
             val tipo = getTitularidad(element)
-            val codigoLocalidad = generarIdentificadorDeLocalidad()
             val codigoProvincia = element.getString("COD_PROVINCIA")
             val nombreProvincia = element.getString("NOM_PROVINCIA")
 
             val direccionCompleta = "$direccion, $codigoPostal $nombreLocalidad, España"
             val puntoGeografico = ubicacion.obtenerCoordenadas(direccionCompleta)
+
+            val codigoLocalidad = generarIdentificadorDeLocalidad(codigosDeLocalidadCV, getCodLocalidad(element))
 
             val provincia = Provincia(nombreProvincia, codigoProvincia)
             val localidad = Localidad(nombreLocalidad, codigoLocalidad, provincia)
@@ -53,6 +54,23 @@ class ExtractorCV(jsonFile: String, val ubicacion: Ubicacion) : Extractor(jsonFi
         return telefono.take(9)
     }
 
+    private fun getCodLocalidad(data: JSONObject):String {
+        var codeL: String
+        var codLocalidad = data.getString("COD_MUNICIPIO")
+        val codProv = data.getString("COD_PROVINCIA")
+
+        val nomLocalidad = data.getString("NOM_MUNICIPIO").duplicarApostrofos()
+
+        if(codLocalidad.length <3){
+            codLocalidad = "0"+codLocalidad
+        }
+
+        codeL = codProv + codLocalidad
+        codeL += " " + nomLocalidad.take(15)
+
+        return codeL
+    }
+
     private fun getTitularidad(data: JSONObject): Titularidad{
         val tipo: String
         try{
@@ -67,6 +85,8 @@ class ExtractorCV(jsonFile: String, val ubicacion: Ubicacion) : Extractor(jsonFi
         //ERROR Y PUBLICA POR TANTO
     }
 
-
+    companion object {
+        private val codigosDeLocalidadCV = mutableMapOf<String, String>()
+    }
 
 }

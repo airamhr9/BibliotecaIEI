@@ -36,7 +36,8 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
             if(nombreLocalidad == "Vitoria-Gasteiz"){
                 nombreLocalidad = "Vitoria - Gasteiz"
             }
-            val codigoLocalidad = generarIdentificadorDeLocalidad()
+
+            val codigoLocalidad = generarIdentificadorDeLocalidad(codigosDeLocalidadEUS, nombreLocalidad + codigoProvincia)
 
             val provincia = Provincia(nombreProvincia, codigoProvincia)
             val localidad = Localidad(nombreLocalidad, codigoLocalidad, provincia)
@@ -57,6 +58,10 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
 
     private fun obtenerTelefono(data: JSONObject): String {
         return data.getString("phone").replace(" ", "").take(9)
+    }
+
+    companion object {
+        private val codigosDeLocalidadEUS = mutableMapOf<String, String>()
     }
 
 }

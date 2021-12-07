@@ -20,13 +20,13 @@ fun main(args: Array<String>) {
     println("Fuente de datos de Euskadi: $jsonFileEUS")
     println("Fuente de datos de Cataluña: $xmlFileCAT $jsonFileCAT")
     println("Fuente de datos de la Comunidad Valenciana: $csvFileCV $jsonFileCV")
-    println("Chrome driver: $chromeDriverPath")
+    println("Chrome driver: $chromeDriverPath\n")
 
     // Vaciar las tablas de la BD
     DataWarehouse.deleteTables()
     var bibliotecas = DataWarehouse.getBibliotecas()
     if (bibliotecas.isEmpty()) {
-        println("La base da datos no contiene ninguna biblioteca")
+        println("La base da datos no contiene ninguna biblioteca\n")
     }
 
     // Procesar datos de Euskadi
@@ -48,7 +48,9 @@ fun main(args: Array<String>) {
     }
 
     // Imprimir las bibliotecas de la BD
+    println()
     bibliotecas = DataWarehouse.getBibliotecas()
     bibliotecas.forEach { println(it) }
+    println("\nNúmero de bibliotecas: ${bibliotecas.size}")
 
 }
