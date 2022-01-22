@@ -1,11 +1,11 @@
 package objects
 
 enum class Titularidad(val value: String) {
-    Publica("publica"),
-    Privada("privada");
+    Publica("Publica"),
+    Privada("Privada");
 
     companion object {
-        fun fromString(value: String) = values().first { it.value == value }
+        fun fromString(string: String) = values().first { it.value.equals(string, ignoreCase = true) }
     }
 
 }

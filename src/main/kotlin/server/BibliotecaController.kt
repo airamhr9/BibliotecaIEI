@@ -24,23 +24,30 @@ class BibliotecaController {
         return "Las bibliotecas se han cargado en el almacén de datos correctamente"
     }
 
-    @GetMapping("/search") // /search?localidad={localidad}&codigoPostal={codigoPostal}&provincia={provincia}&tipo={tipo}
+    @GetMapping("/search") // /search?localidad=Manresa&codigoPostal=08242&provincia=Barcelona&tipo=publica
     fun buscarBibliotecas(
-        @RequestParam localidad: String,
-        @RequestParam codigoPostal: String,
-        @RequestParam provincia: String,
-        @RequestParam tipo: String
+        @RequestParam localidad: String?,
+        @RequestParam codigoPostal: String?,
+        @RequestParam provincia: String?,
+        @RequestParam tipo: String?
     ): List<Biblioteca> {
         val todasLasBibliotecas = DataWarehouse.getBibliotecas()
-
-        // Falta comprobar si son nulos
         val result = todasLasBibliotecas.filter {
-            it.enLocalidad.nombre == localidad
-                    && it.codigoPostal == codigoPostal
-                    && it.enLocalidad.enProvincia.nombre == provincia
-                    && it.tipo == Titularidad.fromString(tipo)
+            var condicion = true
+            if (localidad != null) {
+                condicion = condicion && (it.enLocalidad.nombre == localidad)
+            }
+            if (codigoPostal != null) {
+                condicion = condicion && (it.codigoPostal == codigoPostal)
+            }
+            if (provincia != null) {
+                condicion = condicion && (it.enLocalidad.enProvincia.nombre == provincia)
+            }
+            if (tipo != null) {
+                condicion = condicion && (it.tipo == Titularidad.fromString(tipo))
+            }
+            condicion
         }
-
         return result
     }
 
