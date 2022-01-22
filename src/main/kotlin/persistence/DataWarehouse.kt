@@ -67,7 +67,7 @@ object DataWarehouse {
         println("Tablas creadas")
     }
 
-    fun getBibliotecas() : ArrayList<Biblioteca> {
+    fun getBibliotecas() : List<Biblioteca> {
         val statement = connection.createStatement()
         val resultSet = statement.executeQuery(
                 "SELECT biblioteca.nombre as nombre_biblioteca, tipo, direccion, telefono, codigoPostal, latitud, longitud, email, descripcion, \n" +
@@ -76,7 +76,7 @@ object DataWarehouse {
                 "provincia.nombre as nombre_provincia " +
                 "FROM biblioteca "+
                 "LEFT JOIN localidad ON localidad.codigo = biblioteca.en_localidad  LEFT JOIN provincia ON provincia.codigo = localidad.en_provincia")
-        val result = ArrayList<Biblioteca>()
+        val result = mutableListOf<Biblioteca>()
         while (resultSet.next()) {
             result.add(Biblioteca.fromResultSet(resultSet))
         }
