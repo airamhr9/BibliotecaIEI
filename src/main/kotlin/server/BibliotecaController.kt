@@ -5,6 +5,7 @@ import extractors.ExtractorCV
 import extractors.ExtractorEUS
 import extractors.Ubicacion
 import objects.Biblioteca
+import objects.Titularidad
 import persistence.DataWarehouse
 import wrappers.WrapperCAT
 import wrappers.WrapperCV
@@ -26,18 +27,18 @@ class BibliotecaController {
     @GetMapping("/search") // /search?localidad={localidad}&codigoPostal={codigoPostal}&provincia={provincia}&tipo={tipo}
     fun buscarBibliotecas(
         @RequestParam localidad: String,
-        // @RequestParam codigoPostal: String,
-        // @RequestParam provincia: String,
-        // @RequestParam tipo: String
+        @RequestParam codigoPostal: String,
+        @RequestParam provincia: String,
+        @RequestParam tipo: String
     ): List<Biblioteca> {
         val todasLasBibliotecas = DataWarehouse.getBibliotecas()
 
-        // Falta utilizar el resto de parametros y comprobar si son nulos
+        // Falta comprobar si son nulos
         val result = todasLasBibliotecas.filter {
             it.enLocalidad.nombre == localidad
-                    // && it.codigoPostal == codigoPostal
-                    // && it.enLocalidad.enProvincia.nombre == provincia
-                    // && it.tipo == tipo
+                    && it.codigoPostal == codigoPostal
+                    && it.enLocalidad.enProvincia.nombre == provincia
+                    && it.tipo == Titularidad.fromString(tipo)
         }
 
         return result
