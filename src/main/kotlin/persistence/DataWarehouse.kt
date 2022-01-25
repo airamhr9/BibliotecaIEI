@@ -9,7 +9,9 @@ import java.util.*
 import kotlin.system.exitProcess
 
 object DataWarehouse {
-    private val connection : Connection
+
+    private val connection: Connection
+    val fuentesCargadas = mutableListOf<FuenteDeDatos>()
 
     init {
         try{
@@ -47,6 +49,7 @@ object DataWarehouse {
             statement.close()
         }
         connection.commit()
+        fuentesCargadas.clear()
         println("Tablas eliminadas")
     }
 

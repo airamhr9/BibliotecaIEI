@@ -7,6 +7,7 @@ import objects.Titularidad
 import org.json.JSONArray
 import org.json.JSONObject
 import persistence.DataWarehouse
+import persistence.FuenteDeDatos
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -46,6 +47,7 @@ class ExtractorEUS(jsonFile: String) : Extractor(jsonFile) {
 
             DataWarehouse.addBiblioteca(biblioteca)
         }
+        DataWarehouse.fuentesCargadas.add(FuenteDeDatos.Euskadi)
     }
 
     private fun getPostalCode(postalCode1: String) : String{

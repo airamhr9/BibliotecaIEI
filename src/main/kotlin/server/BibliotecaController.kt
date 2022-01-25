@@ -11,14 +11,18 @@ import wrappers.WrapperCAT
 import wrappers.WrapperCV
 
 import org.springframework.web.bind.annotation.*
+import persistence.FuenteDeDatos
 
 @CrossOrigin
 @RestController
 @RequestMapping("/") // http://127.0.0.1:8080/
 class BibliotecaController {
 
-    @GetMapping("/load") // /load?sources=eus&cat&cv
-    fun cargarBibliotecas(@RequestParam sources: String): String {
+    @GetMapping("/load")
+    fun getFuentesCargadas(): List<FuenteDeDatos> = DataWarehouse.fuentesCargadas
+
+    @PutMapping("/load") // /load?sources=eus&cat&cv
+    fun cargarFuentesDeDatos(@RequestParam sources: String): String {
         DataWarehouse.deleteTables()
         val listaDeFuentes = sources.split('&')
         seleccionarFuentes(listaDeFuentes)

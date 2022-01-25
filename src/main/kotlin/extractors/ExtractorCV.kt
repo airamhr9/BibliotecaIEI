@@ -8,6 +8,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import persistence.DataWarehouse
+import persistence.FuenteDeDatos
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -47,6 +48,7 @@ class ExtractorCV(jsonFile: String, val ubicacion: Ubicacion) : Extractor(jsonFi
 
             DataWarehouse.addBiblioteca(biblioteca)
         }
+        DataWarehouse.fuentesCargadas.add(FuenteDeDatos.ComunitatValenciana)
     }
 
     private fun getTelf(data: JSONObject):String{

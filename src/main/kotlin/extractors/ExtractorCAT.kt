@@ -8,6 +8,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import persistence.DataWarehouse
+import persistence.FuenteDeDatos
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -44,6 +45,7 @@ class ExtractorCAT(jsonFile: String) : Extractor(jsonFile) {
 
             DataWarehouse.addBiblioteca(biblioteca)
         }
+        DataWarehouse.fuentesCargadas.add(FuenteDeDatos.Catalunya)
     }
 
     private fun obtenerTitularidad(propiedades: String): Titularidad {
