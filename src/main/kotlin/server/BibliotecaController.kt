@@ -12,6 +12,7 @@ import wrappers.WrapperCV
 
 import org.springframework.web.bind.annotation.*
 
+@CrossOrigin
 @RestController
 @RequestMapping("/") // http://127.0.0.1:8080/
 class BibliotecaController {
@@ -35,13 +36,13 @@ class BibliotecaController {
         val result = todasLasBibliotecas.filter {
             var condicion = true
             if (localidad != null) {
-                condicion = condicion && (it.enLocalidad.nombre == localidad)
+                condicion = condicion && (it.enLocalidad.nombre.lowercase() == localidad.lowercase())
             }
             if (codigoPostal != null) {
                 condicion = condicion && (it.codigoPostal == codigoPostal)
             }
             if (provincia != null) {
-                condicion = condicion && (it.enLocalidad.enProvincia.nombre == provincia)
+                condicion = condicion && (it.enLocalidad.enProvincia.nombre.lowercase() == provincia.lowercase())
             }
             if (tipo != null) {
                 condicion = condicion && (it.tipo == Titularidad.fromString(tipo))
