@@ -21,7 +21,7 @@ class BibliotecaController {
     @GetMapping("/load")
     fun getFuentesCargadas(): List<FuenteDeDatos> = DataWarehouse.fuentesCargadas
 
-    @PutMapping("/load") // /load?sources=eus&cat&cv
+    @PutMapping("/load") // /load?sources=eus-cat-cv
     fun cargarFuentesDeDatos(@RequestParam sources: String): String {
         DataWarehouse.deleteTables()
         println("SOURCES $sources")
@@ -59,16 +59,14 @@ class BibliotecaController {
 
     private fun seleccionarFuentes(fuentes: List<String>) {
         println("FUENTES $fuentes")
+        if (fuentes.contains("eus")) {
+            insertarBibliotecasDeEuskadi()
+        }
         if (fuentes.contains("cat")) {
-            println("here")
             insertarBibliotecasDeCatalunya()
         }
         if (fuentes.contains("cv")) {
-            println("here12")
             insertarBibliotecasDeComunitatValenciana()
-        }
-        if (fuentes.contains("eus")) {
-            insertarBibliotecasDeEuskadi()
         }
     }
 

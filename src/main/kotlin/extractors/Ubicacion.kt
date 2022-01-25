@@ -41,7 +41,7 @@ class Ubicacion(driverPath: String) : Closeable {
     }
 
     override fun close() {
-        driver.close()
+        driver.quit()
     }
 
 }
