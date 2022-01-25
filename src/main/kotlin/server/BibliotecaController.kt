@@ -24,7 +24,8 @@ class BibliotecaController {
     @PutMapping("/load") // /load?sources=eus&cat&cv
     fun cargarFuentesDeDatos(@RequestParam sources: String): String {
         DataWarehouse.deleteTables()
-        val listaDeFuentes = sources.split('&')
+        println("SOURCES $sources")
+        val listaDeFuentes = sources.split('-')
         seleccionarFuentes(listaDeFuentes)
         return "Las bibliotecas se han cargado en el almacén de datos correctamente"
     }
@@ -57,10 +58,13 @@ class BibliotecaController {
     }
 
     private fun seleccionarFuentes(fuentes: List<String>) {
+        println("FUENTES $fuentes")
         if (fuentes.contains("cat")) {
+            println("here")
             insertarBibliotecasDeCatalunya()
         }
         if (fuentes.contains("cv")) {
+            println("here12")
             insertarBibliotecasDeComunitatValenciana()
         }
         if (fuentes.contains("eus")) {
