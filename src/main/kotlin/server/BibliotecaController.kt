@@ -7,11 +7,11 @@ import extractors.Ubicacion
 import objects.Biblioteca
 import objects.Titularidad
 import persistence.DataWarehouse
+import persistence.FuenteDeDatos
 import wrappers.WrapperCAT
 import wrappers.WrapperCV
 
 import org.springframework.web.bind.annotation.*
-import persistence.FuenteDeDatos
 
 @CrossOrigin
 @RestController
@@ -24,7 +24,6 @@ class BibliotecaController {
     @PutMapping("/load") // /load?sources=eus-cat-cv
     fun cargarFuentesDeDatos(@RequestParam sources: String): String {
         DataWarehouse.deleteTables()
-        println("SOURCES $sources")
         val listaDeFuentes = sources.split('-')
         seleccionarFuentes(listaDeFuentes)
         return "Las bibliotecas se han cargado en el almacén de datos correctamente"
